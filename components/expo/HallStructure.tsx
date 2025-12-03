@@ -56,6 +56,7 @@ export default function HallStructure() {
                     maxDepthThreshold={1.4}
                     color="#151515"
                     metalness={0.6}
+                    mirror={0} // ✅ Added mirror prop to fix TS error
                 />
             </mesh>
 
