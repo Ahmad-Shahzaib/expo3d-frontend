@@ -1,6 +1,6 @@
 import { useThree, useFrame } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import * as THREE from "three";
 
 interface InteractionManagerProps {
@@ -9,25 +9,20 @@ interface InteractionManagerProps {
 }
 
 export default function InteractionManager({ onSelect, booths }: InteractionManagerProps) {
-    const { camera, scene } = useThree();
+    const { camera, scene, pointer, gl } = useThree();
     const [hoveredBooth, setHoveredBooth] = useState<any>(null);
     const raycaster = new THREE.Raycaster();
-    const center = new THREE.Vector2(0, 0);
+    const isDragging = useRef(false);
+    const mouseDownTime = useRef(0);
 
     useFrame(() => {
-        raycaster.setFromCamera(center, camera);
-
-        // Find all intersections with booth meshes
-        // We need to traverse or check specific objects. 
-        // For simplicity, we can rely on the scene graph if we named our booths or put them in a group.
-        // But here, let's just check if we hit anything that has userData.boothId
+        // Use the pointer (mouse) position for raycasting
+        raycaster.setFromCamera(pointer, camera);
 
         const intersects = raycaster.intersectObjects(scene.children, true);
 
         let foundBooth = null;
         for (let i = 0; i < intersects.length; i++) {
-            // Check if the object or its parent is a booth
-            // We will add userData to the Booth component to make this easier
             let obj: any = intersects[i].object;
             while (obj) {
                 if (obj.userData && obj.userData.isBooth) {
@@ -41,22 +36,45 @@ export default function InteractionManager({ onSelect, booths }: InteractionMana
 
         if (foundBooth !== hoveredBooth) {
             setHoveredBooth(foundBooth);
-            // Optional: Change cursor or show tooltip
+            // Change cursor style
+            document.body.style.cursor = foundBooth ? 'pointer' : 'auto';
         }
     });
 
     useEffect(() => {
-        const handleClick = () => {
-            if (hoveredBooth) {
+        const onMouseDown = () => {
+            isDragging.current = false;
+            mouseDownTime.current = Date.now();
+        };
+
+        const onMouseMove = () => {
+            isDragging.current = true;
+        };
+
+        const onMouseUp = (event: MouseEvent) => {
+            // Only trigger if it wasn't a long drag and clicked on canvas
+            const clickDuration = Date.now() - mouseDownTime.current;
+            const isClick = clickDuration < 200 && !isDragging.current;
+
+            // Check if the click target is the canvas
+            if (isClick && event.target === gl.domElement && hoveredBooth) {
                 onSelect(hoveredBooth);
-                // Unlock pointer to allow UI interaction
-                // document.exitPointerLock(); // This is handled by the parent state change usually
             }
         };
 
-        window.addEventListener('click', handleClick);
-        return () => window.removeEventListener('click', handleClick);
-    }, [hoveredBooth, onSelect]);
+        // We attach listeners to the canvas element specifically to avoid UI clicks
+        const canvas = gl.domElement;
+        canvas.addEventListener('mousedown', onMouseDown);
+        canvas.addEventListener('mousemove', onMouseMove);
+        canvas.addEventListener('mouseup', onMouseUp);
+
+        return () => {
+            canvas.removeEventListener('mousedown', onMouseDown);
+            canvas.removeEventListener('mousemove', onMouseMove);
+            canvas.removeEventListener('mouseup', onMouseUp);
+            document.body.style.cursor = 'auto';
+        };
+    }, [hoveredBooth, onSelect, gl]);
 
     return (
         <>

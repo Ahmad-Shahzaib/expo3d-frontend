@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface BoothPopupProps {
     booth: any;
@@ -8,6 +9,8 @@ interface BoothPopupProps {
 
 export default function BoothPopup({ booth, onClose }: BoothPopupProps) {
     const [showContactForm, setShowContactForm] = useState(false);
+
+    const router = useRouter();
 
     return (
         <AnimatePresence>
@@ -62,7 +65,10 @@ export default function BoothPopup({ booth, onClose }: BoothPopupProps) {
                                 </p>
 
                                 <div className="grid grid-cols-2 gap-4">
-                                    <button className="group relative px-4 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white rounded-xl font-medium transition-all shadow-lg hover:shadow-cyan-500/25 flex items-center justify-center gap-2">
+                                    <button
+                                        onClick={() => router.push(`/company/${encodeURIComponent(booth.name)}`)}
+                                        className="group relative px-4 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white rounded-xl font-medium transition-all shadow-lg hover:shadow-cyan-500/25 flex items-center justify-center gap-2"
+                                    >
                                         <span>View Profile</span>
                                         <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />

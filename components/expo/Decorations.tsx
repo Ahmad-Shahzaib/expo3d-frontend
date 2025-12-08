@@ -4,32 +4,13 @@ export default function Decorations() {
     return (
         <group>
             {/* Hanging Banners */}
-            <group position={[0, 8, -15]}>
+            {/* Hanging Banners (Disabled for cleaner look) */}
+            {/* <group position={[0, 8, -15]}>
                 <mesh>
                     <boxGeometry args={[8, 2, 0.1]} />
                     <meshStandardMaterial color="#222" />
                 </mesh>
-                {/* <Text
-                    position={[0, 0, 0.06]}
-                    fontSize={0.8}
-                    color="#4fd1c5"
-                    anchorX="center"
-                    anchorY="middle"
-                >
-                    WELCOME TO EXPO 2025
-                </Text> */}
-                {/* Back side text */}
-                {/* <Text
-                    position={[0, 0, -0.06]}
-                    rotation={[0, Math.PI, 0]}
-                    fontSize={0.8}
-                    color="#4fd1c5"
-                    anchorX="center"
-                    anchorY="middle"
-                >
-                    THANK YOU FOR VISITING
-                </Text> */}
-            </group>
+            </group> */}
 
             {/* Central Seating Area */}
             <group position={[0, 0, -15]}>

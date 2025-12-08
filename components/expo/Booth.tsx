@@ -1,5 +1,5 @@
 import { Text, Float } from "@react-three/drei";
-import { useRef, useState, useMemo } from "react";
+import { useRef, useState, useMemo, useEffect } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 
@@ -15,6 +15,11 @@ interface BoothProps {
 export default function Booth({ position, rotation = [0, 0, 0], companyName, color, onClick, boothData }: BoothProps) {
     const groupRef = useRef<THREE.Group>(null);
     const [hovered, setHovered] = useState(false);
+
+    // Change cursor when hovering
+    useEffect(() => {
+        document.body.style.cursor = hovered ? 'pointer' : 'auto';
+    }, [hovered]);
 
     // Create a custom shape for the Arch
     const archShape = useMemo(() => {
@@ -82,9 +87,9 @@ export default function Booth({ position, rotation = [0, 0, 0], companyName, col
             <mesh position={[0, 4.1, 2]} rotation={[0, 0, 0]}>
                 <boxGeometry args={[4.4, 0.1, 4]} />
                 <meshStandardMaterial
-                    color={color}
-                    emissive={color}
-                    emissiveIntensity={hovered ? 2 : 1}
+                    color={hovered ? "#ffffff" : color}
+                    emissive={hovered ? "#ffffff" : color}
+                    emissiveIntensity={hovered ? 3 : 1}
                     toneMapped={false}
                 />
             </mesh>
@@ -93,18 +98,18 @@ export default function Booth({ position, rotation = [0, 0, 0], companyName, col
             <mesh position={[-2.2, 2, 2]}>
                 <boxGeometry args={[0.1, 4, 4]} />
                 <meshStandardMaterial
-                    color={color}
-                    emissive={color}
-                    emissiveIntensity={hovered ? 2 : 1}
+                    color={hovered ? "#ffffff" : color}
+                    emissive={hovered ? "#ffffff" : color}
+                    emissiveIntensity={hovered ? 3 : 1}
                     toneMapped={false}
                 />
             </mesh>
             <mesh position={[2.2, 2, 2]}>
                 <boxGeometry args={[0.1, 4, 4]} />
                 <meshStandardMaterial
-                    color={color}
-                    emissive={color}
-                    emissiveIntensity={hovered ? 2 : 1}
+                    color={hovered ? "#ffffff" : color}
+                    emissive={hovered ? "#ffffff" : color}
+                    emissiveIntensity={hovered ? 3 : 1}
                     toneMapped={false}
                 />
             </mesh>
