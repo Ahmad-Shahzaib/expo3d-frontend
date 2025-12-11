@@ -68,6 +68,8 @@ export default function ExpoHallScene() {
                     <div className="text-sm text-gray-200 space-y-2">
                         <p>• <span className="text-cyan-300 font-semibold">Left-Click & Drag</span> to look around</p>
                         <p>• <span className="text-cyan-300 font-semibold">W/A/S/D</span> or <span className="text-cyan-300 font-semibold">Arrow Keys</span> to walk</p>
+                        <p>• <span className="text-cyan-300 font-semibold">Shift</span> to sprint</p>
+                        <p>• <span className="text-cyan-300 font-semibold">Scroll</span> to zoom</p>
                         <p>• <span className="text-cyan-300 font-semibold">Hover & Click</span> on booths for details</p>
                     </div>
                 </div>
