@@ -16,8 +16,14 @@ export default function InteractionManager({ onSelect, booths }: InteractionMana
     const mouseDownTime = useRef(0);
 
     useFrame(() => {
-        // Use the pointer (mouse) position for raycasting
-        raycaster.setFromCamera(pointer, camera);
+        const isLocked = document.pointerLockElement === gl.domElement;
+
+        // Use center of screen for Raycasting if locked, otherwise use mouse pointer
+        if (isLocked) {
+            raycaster.setFromCamera(new THREE.Vector2(0, 0), camera);
+        } else {
+            raycaster.setFromCamera(pointer, camera);
+        }
 
         const intersects = raycaster.intersectObjects(scene.children, true);
 
@@ -36,8 +42,10 @@ export default function InteractionManager({ onSelect, booths }: InteractionMana
 
         if (foundBooth !== hoveredBooth) {
             setHoveredBooth(foundBooth);
-            // Change cursor style
-            document.body.style.cursor = foundBooth ? 'pointer' : 'auto';
+            // Change cursor style only if not locked
+            if (!isLocked) {
+                document.body.style.cursor = foundBooth ? 'pointer' : 'auto';
+            }
         }
     });
 
@@ -52,7 +60,17 @@ export default function InteractionManager({ onSelect, booths }: InteractionMana
         };
 
         const onMouseUp = (event: MouseEvent) => {
-            // Only trigger if it wasn't a long drag and clicked on canvas
+            const isLocked = document.pointerLockElement === gl.domElement;
+
+            // If locked (FPS mode), we don't care about drag, we just click what's in front
+            if (isLocked) {
+                if (hoveredBooth) {
+                    onSelect(hoveredBooth);
+                }
+                return;
+            }
+
+            // Normal mode checks
             const clickDuration = Date.now() - mouseDownTime.current;
             const isClick = clickDuration < 200 && !isDragging.current;
 

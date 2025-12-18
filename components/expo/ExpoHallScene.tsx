@@ -66,14 +66,20 @@ export default function ExpoHallScene() {
                 <div className="bg-black/70 backdrop-blur-md p-5 rounded-lg border border-cyan-500/30 text-white shadow-xl">
                     <h1 className="text-xl font-bold mb-3 text-cyan-400">🎯 Controls</h1>
                     <div className="text-sm text-gray-200 space-y-2">
-                        <p>• <span className="text-cyan-300 font-semibold">Left-Click & Drag</span> to look around</p>
+                        <p>• <span className="text-cyan-300 font-semibold">Mouse</span> to look around</p>
+                        <p>• <span className="text-cyan-300 font-semibold">Click</span> to capture cursor</p>
                         <p>• <span className="text-cyan-300 font-semibold">W/A/S/D</span> or <span className="text-cyan-300 font-semibold">Arrow Keys</span> to walk</p>
                         <p>• <span className="text-cyan-300 font-semibold">Shift</span> to sprint</p>
-                        <p>• <span className="text-cyan-300 font-semibold">Scroll</span> to zoom</p>
-                        <p>• <span className="text-cyan-300 font-semibold">Hover & Click</span> on booths for details</p>
+                        <p>• <span className="text-cyan-300 font-semibold">ESC</span> to release cursor</p>
+                        <p>• <span className="text-cyan-300 font-semibold">Left Click</span> on booths for details</p>
                     </div>
                 </div>
             </div>
+
+            {/* Crosshair for FPS Aiming */}
+            {hasEntered && !selectedBooth && (
+                <div className="absolute top-1/2 left-1/2 w-1.5 h-1.5 bg-white/80 rounded-full transform -translate-x-1/2 -translate-y-1/2 pointer-events-none mix-blend-difference z-50 shadow-[0_0_2px_rgba(0,0,0,0.5)]"></div>
+            )}
 
             {selectedBooth && (
                 <BoothPopup booth={selectedBooth} onClose={() => setSelectedBooth(null)} />
