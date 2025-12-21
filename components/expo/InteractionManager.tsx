@@ -1,6 +1,6 @@
 import { useThree, useFrame } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import * as THREE from "three";
 
 interface InteractionManagerProps {
@@ -11,7 +11,8 @@ interface InteractionManagerProps {
 export default function InteractionManager({ onSelect, booths }: InteractionManagerProps) {
     const { camera, scene, pointer, gl } = useThree();
     const [hoveredBooth, setHoveredBooth] = useState<any>(null);
-    const raycaster = new THREE.Raycaster();
+    const raycaster = useMemo(() => new THREE.Raycaster(), []);
+    const center = useMemo(() => new THREE.Vector2(0, 0), []);
     const isDragging = useRef(false);
     const mouseDownTime = useRef(0);
 
@@ -20,7 +21,7 @@ export default function InteractionManager({ onSelect, booths }: InteractionMana
 
         // Use center of screen for Raycasting if locked, otherwise use mouse pointer
         if (isLocked) {
-            raycaster.setFromCamera(new THREE.Vector2(0, 0), camera);
+            raycaster.setFromCamera(center, camera);
         } else {
             raycaster.setFromCamera(pointer, camera);
         }

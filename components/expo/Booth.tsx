@@ -115,13 +115,14 @@ export default function Booth({ position, rotation = [0, 0, 0], companyName, col
             </mesh>
 
             {/* Company Name on Top */}
-            <group position={[0, 5.2, 2]}>
+            <group position={[0, 5.5, 2.1]}>
                 <Text
-                    fontSize={0.4}
+                    fontSize={0.6}
+                    fontWeight="bold"
                     color="white"
                     anchorX="center"
                     anchorY="middle"
-                    outlineWidth={0.02}
+                    outlineWidth={0.05}
                     outlineColor="#000"
                 >
                     {companyName}

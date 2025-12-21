@@ -9,6 +9,7 @@ import BoothPopup from "./BoothPopup";
 import Decorations from "./Decorations";
 import InteractionManager from "./InteractionManager";
 import WelcomeModal from "./WelcomeModal";
+import { ExpoProvider } from "./ExpoContext";
 
 const BOOTHS_DATA = [
     // Left side (Increased Spacing for easier navigation)
@@ -34,28 +35,30 @@ export default function ExpoHallScene() {
                 gl={{ antialias: true }}
             >
                 <Suspense fallback={null}>
-                    <HallStructure />
-                    <Decorations />
+                    <ExpoProvider>
+                        <HallStructure />
+                        <Decorations />
 
-                    <EffectComposer>
-                        <Bloom luminanceThreshold={1} mipmapBlur intensity={1.5} radius={0.4} />
-                    </EffectComposer>
+                        <EffectComposer>
+                            <Bloom luminanceThreshold={1} mipmapBlur intensity={1.5} radius={0.4} />
+                        </EffectComposer>
 
-                    {BOOTHS_DATA.map((booth) => (
-                        <Booth
-                            key={booth.id}
-                            position={booth.position}
-                            rotation={booth.rotation}
-                            companyName={booth.name}
-                            color={booth.color}
-                            onClick={() => setSelectedBooth(booth)}
-                            boothData={booth}
-                        />
-                    ))}
+                        {BOOTHS_DATA.map((booth) => (
+                            <Booth
+                                key={booth.id}
+                                position={booth.position}
+                                rotation={booth.rotation}
+                                companyName={booth.name}
+                                color={booth.color}
+                                onClick={() => setSelectedBooth(booth)}
+                                boothData={booth}
+                            />
+                        ))}
 
-                    <InteractionManager onSelect={setSelectedBooth} booths={BOOTHS_DATA} />
+                        <InteractionManager onSelect={setSelectedBooth} booths={BOOTHS_DATA} />
 
-                    {hasEntered && !selectedBooth && <PlayerControls />}
+                        {hasEntered && !selectedBooth && <PlayerControls />}
+                    </ExpoProvider>
                 </Suspense>
             </Canvas>
 
