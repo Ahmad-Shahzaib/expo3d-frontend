@@ -4,7 +4,7 @@ import { extend, useThree } from "@react-three/fiber";
 import { useEffect } from "react";
 import * as THREE from "three";
 import Elevator from "./Elevator";
-import ReceptionDesk from "./ReceptionDesk";
+// import ReceptionDesk from "./ReceptionDesk";
 
 // Register the uniforms lib
 extend({ RectAreaLightUniformsLib });
