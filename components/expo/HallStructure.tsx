@@ -167,6 +167,7 @@ export default function HallStructure() {
 
             {/* --- RECEPTION & SIGNAGE --- */}
             {/* Reception Desk */}
+
             {/* <ReceptionDesk /> */}
 
             {/* Floor Signs */}
